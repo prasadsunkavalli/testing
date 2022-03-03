@@ -1,34 +1,69 @@
 <template>
   <div id="app">
-   <h1>{{counter}}</h1>
-   <button class="bty" :disabled="counter<=0" @click="decrement">-</button>
-   <button class="bty" @click="increment">+</button>
-   <p v-if="counter==0">Value equal to zero so - button disabled</p>
+  <h1>Todo Using Class Components</h1>
+  <input type="text" placeholder="Add your task...." v-model="value"/>
+<button @click="addtask" :disabled="this.value.length==0">Add Task</button>
+   <div class="modeling" v-if="this.todoitems.length!==0">
+    
+    <div  v-for="(todo,index) in this.todoitems" :key="index">
+      <div class="datas">
+  <input @click="boxclicked" type="checkbox"/>                        
+  <p :class="{marked: ischecked}">{{todo}}</p>
+  <button>Edit</button>
+  <button @click="deletetask(index)">Delete</button>
   </div>
+  </div>
+  </div>
+  </div>  
+
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-
+import { Component, Vue } from 'vue-property-decorator'
+ 
 
 @Component
 export default class App extends Vue {
-  counter = 0
-decrement(){
-  this.counter-= 1
-}
-increment(){
-  this.counter+=1
-}
+  value = ""
+  index = 0
+  todoitems:string[] = []
+  ischecked= false
+  
+  
+
+  
+addtask(){
+  this.todoitems.push(this.value)
+  this.value= ""
 
 }
+
+deletetask(index:number){
+  this.todoitems.splice(index,1)
+}
+
+
+boxclicked(){
+  this.ischecked=!this.ischecked
+  
+}
+}
+
 </script>
 
 <style>
+
 #app{
   text-align: center;
+  
 }
-.bty{
-  margin-left: 10px;
+.datas{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.marked{
+  text-decoration: line-through;
+  
 }
 </style>
